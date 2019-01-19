@@ -2,7 +2,14 @@
   "name": "react-design-editor",
   "version": "0.0.1",
   "description": "React.js + ant.design + fabric.js",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "files": [
+    "dist",
+    "lib",
+    "es"
+  ],
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack -p --config webpack.prod.config.js",
@@ -10,7 +17,8 @@
     "start:dev": "webpack-dev-server --config webpack.dev.config.js --inline",
     "deploy": "npm install && npm run build && gh-pages -d public",
     "postinstall": "npm install --no-save --no-optional fabric@~2.3.3",
-    "lint": "tslint '**/*.ts'"
+    "lint": "tslint '**/*.ts'",
+    "tsc": "tsc"
   },
   "repository": {
     "type": "git",
@@ -30,6 +38,10 @@
   },
   "homepage": "https://salgum1114.github.io/react-design-editor",
   "dependencies": {
+    "@types/animejs": "^2.0.1",
+    "@types/fabric": "^1.5.48",
+    "@types/lodash": "^4.14.120",
+    "@types/uuid": "^3.4.4",
     "animejs": "^3.0.0",
     "antd": "^3.8.0",
     "classnames": "^2.2.6",

@@ -3,22 +3,21 @@
         "allowJs": true,
         "allowSyntheticDefaultImports": true,
         "jsx": "react",
-        "module": "es6",
+        "module": "esnext",
         "moduleResolution": "node",
         "noEmit": true,
-        "noUnusedLocals": false,
-        "noUnusedParameters": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
         "preserveConstEnums": true,
         "removeComments": false,
         "skipLibCheck": true,
         "sourceMap": true,
         "strict": true,
-        "strictNullChecks": false,
-        "target": "es6",
+        "target": "esnext",
         "outDir": "./dist/",
     },
     "include": [
-        "./src/components/canvas/*"
+        "./src/**/**/*"
     ],
     "exclude": [
         "node_modules",
