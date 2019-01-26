@@ -33,11 +33,18 @@
             {
               "ignore": [ "src/" ]
             }
-        ]
+        ],
+        "import/extensions": [0, "never", { "ts": "never" }]
     },
     "env": {
         "browser": true,
         "node": true
+    },
+    "settings": {
+        "import/resolver": {
+            "node": true,
+            "eslint-import-resolver-typescript": true
+        }
     },
     "extends": ["airbnb"]
 }

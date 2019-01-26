@@ -6,7 +6,6 @@ import i18n from 'i18next';
 import storage from 'store/storages/localStorage';
 
 import Wireframe from '../wireframe/Wireframe';
-import Canvas from '../canvas/Canvas';
 import ImageMapFooterToolbar from './ImageMapFooterToolbar';
 import ImageMapItems from './ImageMapItems';
 import ImageMapTitle from './ImageMapTitle';
@@ -14,6 +13,7 @@ import ImageMapHeaderToolbar from './ImageMapHeaderToolbar';
 import ImageMapPreview from './ImageMapPreview';
 import ImageMapConfigurations from './ImageMapConfigurations';
 import SandBox from '../sandbox/SandBox';
+import Canvas from '../canvas/Canvas';
 
 import '../../libs/fontawesome-5.2.0/css/all.css';
 import '../../styles/index.less';

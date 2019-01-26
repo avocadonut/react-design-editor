@@ -1,26 +1,27 @@
 {
     "compilerOptions": {
-        "allowJs": true,
-        "allowSyntheticDefaultImports": true,
-        "jsx": "react",
-        "module": "esnext",
-        "moduleResolution": "node",
-        "noEmit": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "preserveConstEnums": true,
-        "removeComments": false,
+        "noImplicitReturns": true,
+        "noImplicitAny": true,
+        "declaration": true,
         "skipLibCheck": true,
-        "sourceMap": true,
         "strict": true,
-        "target": "esnext",
-        "outDir": "./public",
+        "strictNullChecks": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "jsx": "react",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "es5",
+        "outDir": "lib"
     },
     "include": [
-        "./src/**/**/*"
+        "src/**/*"
     ],
     "exclude": [
         "node_modules",
-        "**/node_modules/*"
+        "dist",
+        "lib"
     ]
 }

@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack -p --config webpack.prod.config.js",
+    "build": "webpack -p --config webpack.config.prod.js",
     "start": "npm install && npm run start:dev",
-    "start:dev": "webpack-dev-server --config webpack.dev.config.js --inline",
+    "start:dev": "webpack-dev-server --config webpack.config.dev.js --inline",
     "deploy": "npm install && npm run build && gh-pages -d public",
     "postinstall": "npm install --no-save --no-optional fabric@~2.3.3",
+    "tsc": "tsc",
     "lint": "tslint '**/*.ts'"
   },
   "repository": {
@@ -72,6 +73,7 @@
     "css-loader": "^2.1.0",
     "eslint": "^5.12.0",
     "eslint-config-airbnb": "^17.1.0",
+    "eslint-import-resolver-typescript": "^1.1.1",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
@@ -85,6 +87,7 @@
     "style-loader": "^0.23.1",
     "tslint": "^5.12.1",
     "tslint-react": "^3.6.0",
+    "typescript": "^3.2.4",
     "uglifyjs-webpack-plugin": "^2.1.1",
     "url-loader": "^1.1.2",
     "webpack": "^4.28.4",

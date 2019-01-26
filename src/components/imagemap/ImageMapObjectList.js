@@ -5,7 +5,7 @@ import { Button } from 'antd';
 import Icon from '../icon/Icon';
 import { FlexBox, FlexItem } from '../flex';
 
-class CanvasList extends Component {
+class ImageMapObjectList extends Component {
     static propTypes = {
         canvasRef: PropTypes.any,
         selectedItem: PropTypes.object,
@@ -124,4 +124,4 @@ class CanvasList extends Component {
     }
 }
 
-export default CanvasList;
+export default ImageMapObjectList;

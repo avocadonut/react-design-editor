@@ -1,6 +1,12 @@
 {
     "extends": ["tslint:recommended", "tslint-react"],
-    "rules": {},
+    "rules": {
+      "quotemark": [true, "single", "jsx-double"],
+      "ordered-imports": false,
+      "object-literal-sort-keys": false,
+      "member-access": false,
+      "member-ordering": false
+    },
     "linterOptions": {
 		"exclude": ["**/node_modules/**"]
 	}

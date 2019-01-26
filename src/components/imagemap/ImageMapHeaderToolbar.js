@@ -4,7 +4,7 @@ import { Button } from 'antd';
 
 import Icon from '../icon/Icon';
 import { FlexBox, FlexItem } from '../flex';
-import CanvasList from '../canvas/CanvasList';
+import ImageMapObjectList from './ImageMapObjectList';
 
 class ImageMapHeaderToolbar extends Component {
     static propTypes = {
@@ -22,7 +22,7 @@ class ImageMapHeaderToolbar extends Component {
                         <Icon name="layer-group" />
                     </Button>
                     <div className="rde-canvas-list">
-                        <CanvasList canvasRef={canvasRef} selectedItem={selectedItem} />
+                        <ImageMapObjectList canvasRef={canvasRef} selectedItem={selectedItem} />
                     </div>
                 </FlexItem>
                 <FlexItem className="rde-canvas-toolbar rde-canvas-toolbar-alignment">
@@ -40,13 +40,13 @@ class ImageMapHeaderToolbar extends Component {
                     </Button>
                 </FlexItem>
                 <FlexItem className="rde-canvas-toolbar rde-canvas-toolbar-alignment">
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.alignmentHandlers.left()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.alignmentTools.left()}>
                         <Icon name="align-left" />
                     </Button>
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.alignmentHandlers.center()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.alignmentTools.center()}>
                         <Icon name="align-center" />
                     </Button>
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.alignmentHandlers.right()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.alignmentTools.right()}>
                         <Icon name="align-right" />
                     </Button>
                 </FlexItem>
