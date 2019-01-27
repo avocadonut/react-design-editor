@@ -1,7 +1,9 @@
-import { ITools } from './Tools';
-import { IStaticCanvas, IWorkareaOption, IStaticObject } from '../Canvas';
+import Tools, { ITools } from './Tools';
+import { IStaticObject } from '../Canvas';
 
 export interface IZoomTools extends ITools {
+    minZoom?: number;
+    maxZoom?: number;
     zoomToPoint(point: fabric.Point| any, zoom: number): void;
     zoomOneToOne(): void;
     zoomToFit(): void;
@@ -9,20 +11,14 @@ export interface IZoomTools extends ITools {
     zoomOut(): void;
 }
 
-class ZoomTools implements IZoomTools {
-    canvas: IStaticCanvas;
-    workarea: IWorkareaOption;
+class ZoomTools extends Tools implements IZoomTools {
     minZoom: number;
     maxZoom: number;
-    onZoom: any;
 
-    constructor(canvas: IStaticCanvas, workarea: IWorkareaOption,
-        minZoom: number, maxZoom: number, onZoom: any) {
-        this.canvas = canvas;
-        this.workarea = workarea;
+    constructor(toolOption: ITools, minZoom: number, maxZoom: number) {
+        super(toolOption);
         this.minZoom = minZoom;
         this.maxZoom = maxZoom;
-        this.onZoom = onZoom;
     }
 
     zoomToPoint(point: fabric.Point | any, zoom: number) {
@@ -35,7 +31,7 @@ class ZoomTools implements IZoomTools {
         }
         this.canvas.zoomToPoint(point, zoomRatio);
         this.canvas.getObjects().forEach((obj: IStaticObject) => {
-            if (this.canvas.elementTools.isElementType(obj.type)) {
+            if (this.canvas.generalTools.isElementType(obj.type)) {
                 const width = obj.width * obj.scaleX * zoomRatio;
                 const height = obj.height * obj.scaleY * zoomRatio;
                 const el = this.canvas.elementTools.findById(obj.id);

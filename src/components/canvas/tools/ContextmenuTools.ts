@@ -1,27 +1,19 @@
 import ReactDOM from 'react-dom';
 import debounce from 'lodash/debounce';
 
-import { IStaticObject, IStaticCanvas } from '../Canvas';
-import { ITools } from './Tools';
+import { IStaticObject } from '../Canvas';
+import Tools, { ITools } from './Tools';
 
 export interface IContextmenuTools extends ITools {
-    target?: IStaticObject;
     contextmenuRef?: HTMLDivElement;
     create(): void;
     remove(): void;
-    show(e: MouseEvent, target: IStaticObject): void;
-    hide(target: IStaticObject): void;
+    show(e?: MouseEvent, target?: IStaticObject): void;
+    hide(target?: IStaticObject): void;
 }
 
-class ContextmenuTools implements IContextmenuTools {
-    canvas: IStaticCanvas;
+class ContextmenuTools extends Tools implements IContextmenuTools {
     contextmenuRef?: HTMLDivElement;
-    onContext?: any;
-
-    constructor(canvas: IStaticCanvas, onContext: any) {
-        this.canvas = canvas;
-        this.onContext = onContext;
-    }
 
     create() {
         this.contextmenuRef = document.createElement('div');
@@ -37,17 +29,19 @@ class ContextmenuTools implements IContextmenuTools {
     }
 
     show = debounce(async (e: MouseEvent, target: IStaticObject) => {
-        const { onContext } = this;
+        if (!this.onContext) {
+            return;
+        }
         while (this.contextmenuRef.hasChildNodes()) {
             this.contextmenuRef.removeChild(this.contextmenuRef.firstChild);
         }
         const contextmenu = document.createElement('div');
         contextmenu.className = 'rde-contextmenu-right';
-        const element = await onContext(this.contextmenuRef, e, target);
+        const element = await this.onContext(this.contextmenuRef, e, target);
         if (!element) {
             return;
         }
-        contextmenu.innerHTML = element;
+        // contextmenu.innerHTML = element;
         this.contextmenuRef.appendChild(contextmenu);
         ReactDOM.render(element, contextmenu);
         this.contextmenuRef.classList.remove('contextmenu-hidden');
@@ -56,7 +50,7 @@ class ContextmenuTools implements IContextmenuTools {
         this.contextmenuRef.style.top = `${top}px`;
     }, 100);
 
-    hide = debounce(async (target: IStaticObject) => {
+    hide = debounce(async (target?: IStaticObject) => {
         this.contextmenuRef.classList.add('contextmenu-hidden');
     }, 100);
 }

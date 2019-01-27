@@ -1,9 +1,10 @@
 import { fabric } from 'fabric';
 
-import { ITools } from './Tools';
-import { IStaticCanvas } from '../Canvas';
+import Tools, { ITools } from './Tools';
 
 export interface ICropTools extends ITools {
+    cropObject?: fabric.Object;
+    cropRect?: fabric.Rect;
     validType(): boolean;
     start(): void;
     finish(): void;
@@ -12,14 +13,9 @@ export interface ICropTools extends ITools {
     moving(opt: fabric.IEvent): void;
 }
 
-class CropTools implements ICropTools {
-    canvas: IStaticCanvas;
+class CropTools extends Tools implements ICropTools {
     cropObject: fabric.Object;
     cropRect: fabric.Rect;
-
-    constructor(canvas: IStaticCanvas) {
-        this.canvas = canvas;
-    }
 
     validType() {
         const activeObject = this.canvas.getActiveObject();

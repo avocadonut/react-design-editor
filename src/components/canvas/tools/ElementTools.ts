@@ -1,7 +1,7 @@
 import { fabric } from 'fabric';
 import interact from 'interactjs';
 
-import { ITools } from './Tools';
+import Tools, { ITools } from './Tools';
 import { IStaticObject, IStaticCanvas } from '../Canvas';
 
 export interface ICodeProperty {
@@ -30,17 +30,7 @@ export interface IElementTools extends ITools {
     draggable?(el: HTMLElement | string, obj: IStaticObject): interact.Interactable | null;
 }
 
-class ElementTools implements IElementTools {
-    canvas: IStaticCanvas;
-    container: React.RefObject<HTMLDivElement>;
-    onSelect?: any;
-
-    constructor(canvas: IStaticCanvas, container?: React.RefObject<HTMLDivElement>, onSelect?: any) {
-        this.canvas = canvas;
-        this.container = container;
-        this.onSelect = onSelect;
-    }
-
+class ElementTools extends Tools implements IElementTools {
     set(obj: IStaticObject, code: any) {
         if (obj.type === 'iframe') {
             this.createIFrame(obj, code);

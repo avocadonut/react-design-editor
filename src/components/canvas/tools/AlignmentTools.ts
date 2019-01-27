@@ -1,5 +1,4 @@
-import { ITools } from './Tools';
-import { IStaticCanvas } from '../Canvas';
+import Tools, { ITools } from './Tools';
 
 export interface IAlignmentTools extends ITools {
     left(): void;
@@ -7,13 +6,7 @@ export interface IAlignmentTools extends ITools {
     right(): void;
 }
 
-class AlignmentTools implements IAlignmentTools {
-    canvas: IStaticCanvas;
-
-    constructor(canvas: IStaticCanvas) {
-        this.canvas = canvas;
-    }
-
+class AlignmentTools extends Tools implements IAlignmentTools {
     left() {
         const activeObject = this.canvas.getActiveObject();
         if (activeObject && activeObject.type === 'activeSelection') {

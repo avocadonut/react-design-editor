@@ -7,7 +7,9 @@
       "member-access": false,
       "member-ordering": false,
       "align": false,
-      "no-console": false
+      "no-console": false,
+      "no-shadowed-variable": false,
+      "max-line-length": false
     },
     "linterOptions": {
 		"exclude": ["**/node_modules/**"]

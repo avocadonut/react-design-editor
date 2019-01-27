@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom';
 import debounce from 'lodash/debounce';
 
-import { ITools } from './Tools';
-import { IStaticObject, IStaticCanvas } from '../Canvas';
+import Tools, { ITools } from './Tools';
+import { IStaticObject } from '../Canvas';
 
 export interface ITooltipTools extends ITools {
     target?: IStaticObject;
@@ -10,19 +10,12 @@ export interface ITooltipTools extends ITools {
     create(): void;
     remove(): void;
     show(target: IStaticObject): void;
-    hide(target: IStaticObject): void;
+    hide(target?: IStaticObject): void;
 }
 
-class TooltipTools implements ITooltipTools {
-    canvas: IStaticCanvas;
+class TooltipTools extends Tools implements ITooltipTools {
     target?: IStaticObject;
     tooltipRef?: HTMLDivElement;
-    onTooltip?: any;
-
-    constructor(canvas: IStaticCanvas, onTooltip?: any) {
-        this.canvas = canvas;
-        this.onTooltip = onTooltip;
-    }
 
     create() {
         this.tooltipRef = document.createElement('div');
@@ -39,19 +32,18 @@ class TooltipTools implements ITooltipTools {
 
     show = debounce(async (target: IStaticObject) => {
         if (target.tooltip && target.tooltip.enabled) {
+            if (this.onTooltip) {
+                return;
+            }
             while (this.tooltipRef.hasChildNodes()) {
                 this.tooltipRef.removeChild(this.tooltipRef.firstChild);
             }
             const tooltip = document.createElement('div');
             tooltip.className = 'rde-tooltip-right';
-            let element = target.name;
-            if (this.onTooltip) {
-                element = await this.onTooltip(this.tooltipRef, target);
-                if (!element) {
-                    return;
-                }
+            const element = await this.onTooltip(this.tooltipRef, target);
+            if (!element) {
+                return;
             }
-            tooltip.innerHTML = element;
             this.tooltipRef.appendChild(tooltip);
             ReactDOM.render(element, tooltip);
             this.tooltipRef.classList.remove('tooltip-hidden');
@@ -75,7 +67,7 @@ class TooltipTools implements ITooltipTools {
         }
     }, 100);
 
-    hide = debounce((target: IStaticObject) => {
+    hide = debounce((target?: IStaticObject) => {
         this.target = null;
         if (this.tooltipRef && this.tooltipRef.classList) {
             this.tooltipRef.classList.add('tooltip-hidden');

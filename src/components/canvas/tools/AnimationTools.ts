@@ -1,7 +1,7 @@
 import anime, { AnimeInstance } from 'animejs';
 
-import { ITools } from './Tools';
-import { IStaticCanvas, IStaticObject } from '../Canvas';
+import Tools, { ITools } from './Tools';
+import { IStaticObject } from '../Canvas';
 
 export interface IAnimationTools extends ITools {
     play(id: string, hasControls?: boolean): void;
@@ -9,16 +9,10 @@ export interface IAnimationTools extends ITools {
     stop(id: string, hasControls?: boolean): void;
     restart(id: string): void;
     initAnimation(obj: IStaticObject, hasControls?: boolean): void;
-    getAnimation(obj: IStaticObject, hasControls?: boolean): AnimeInstance;
+    getAnimation(obj: IStaticObject, hasControls?: boolean): AnimeInstance | null;
 }
 
-class AnimationTools implements IAnimationTools {
-    canvas: IStaticCanvas;
-
-    constructor(canvas: IStaticCanvas) {
-        this.canvas = canvas;
-    }
-
+class AnimationTools extends Tools implements IAnimationTools {
     play(id: string, hasControls?: boolean) {
         const findObject = this.canvas.generalTools.findById(id);
         if (!findObject) {
@@ -262,7 +256,7 @@ class AnimationTools implements IAnimationTools {
             });
         } else {
             console.warn('Not supported type.');
-            return;
+            return null;
         }
         return anime(option);
     }

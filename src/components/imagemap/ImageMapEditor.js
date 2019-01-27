@@ -206,7 +206,7 @@ class ImageMapEditor extends Component {
                 return;
             }
             if (changedKey === 'lock') {
-                this.canvasRef.handlers.setObject({
+                this.canvasRef.canvas.generalTools.setObject({
                     lockMovementX: changedValue,
                     lockMovementY: changedValue,
                     hasControls: !changedValue,

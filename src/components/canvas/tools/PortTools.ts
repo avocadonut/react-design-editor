@@ -1,10 +1,10 @@
-import { ITools } from './Tools';
+import Tools, { ITools } from './Tools';
 
 export interface IPortTools extends ITools {
 
 }
 
-class PortTools implements IPortTools {
+class PortTools extends Tools implements IPortTools {
 
 }
 

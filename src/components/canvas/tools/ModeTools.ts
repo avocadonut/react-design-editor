@@ -1,7 +1,7 @@
 import { fabric } from 'fabric';
 
-import { ITools } from './Tools';
-import { IStaticCanvas, IStaticObject, IWorkareaOption, ICanvasOption } from '../Canvas';
+import Tools, { ITools } from './Tools';
+import { IStaticObject } from '../Canvas';
 
 interface ICallbackRet {
     selectable: boolean;
@@ -17,17 +17,7 @@ export interface IModeTools extends ITools {
     moving(e: MouseEvent): void;
 }
 
-class ModeTools implements IModeTools {
-    canvas: IStaticCanvas;
-    workarea: IWorkareaOption;
-    canvasOption: ICanvasOption;
-
-    constructor(canvas: IStaticCanvas, workarea: IWorkareaOption, canvasOption: ICanvasOption) {
-        this.canvas = canvas;
-        this.workarea = workarea;
-        this.canvasOption = canvasOption;
-    }
-
+class ModeTools extends Tools implements IModeTools {
     selection(callback: (obj: IStaticObject) => CallbackRetType) {
         this.canvas.interactionMode = 'selection';
         this.canvas.selection = this.canvasOption.selection;

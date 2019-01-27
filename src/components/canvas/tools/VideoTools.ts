@@ -3,8 +3,8 @@ import { fabric } from 'fabric';
 import 'mediaelement';
 import 'mediaelement/build/mediaelementplayer.min.css';
 
-import { ITools } from './Tools';
-import { IStaticObject, IStaticCanvas } from '../Canvas';
+import Tools, { ITools } from './Tools';
+import { IStaticObject } from '../Canvas';
 
 export interface IVideoTools extends ITools {
     play?(): void;
@@ -15,15 +15,7 @@ export interface IVideoTools extends ITools {
     set(obj: IStaticObject, src: string | File): void;
 }
 
-class VideoTools implements IVideoTools {
-    canvas: IStaticCanvas;
-    container?: React.RefObject<HTMLDivElement>;
-
-    constructor(canvas: IStaticCanvas, container?: React.RefObject<HTMLDivElement>) {
-        this.canvas = canvas;
-        this.container = container;
-    }
-
+class VideoTools extends Tools implements IVideoTools {
     create(obj: IStaticObject, src: any) {
         const { editable } = this.canvas;
         const { id, video: { autoplay, muted, loop } } = obj;

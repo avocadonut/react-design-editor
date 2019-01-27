@@ -1,21 +1,15 @@
 import { fabric } from 'fabric';
 
-import { IGridOption, IStaticCanvas } from '../Canvas';
-import { ITools } from './Tools';
+import Tools, { ITools } from './Tools';
 
 export interface IGridTools extends ITools {
-    gridOption: IGridOption;
     init(): void;
     setCoords(target: fabric.Object): void;
 }
 
-class GridTools implements IGridTools {
-    canvas: IStaticCanvas;
-    gridOption: IGridOption;
-
-    constructor(canvas: IStaticCanvas, gridOption: IGridOption) {
-        this.canvas = canvas;
-        this.gridOption = gridOption;
+class GridTools extends Tools implements IGridTools {
+    constructor(toolOption: ITools) {
+        super(toolOption);
         this.init();
     }
 
