@@ -9,21 +9,19 @@ export default {
         if (!data) {
             return null;
         }
-        const videoLoadType = data.videoLoadType || 'file';
+        const videoLoadType = data.video.type || 'file';
         return (
             <React.Fragment>
                 <Row>
                     <Col span={8}>
                         <Form.Item label="Auto Play" colon={false}>
                             {
-                                getFieldDecorator('autoplay', {
+                                getFieldDecorator('video.autoplay', {
                                     rules: [{
                                         type: 'boolean',
-                                        // required: true,
-                                        // message: 'Please input rotation',
                                     }],
                                     valuePropName: 'checked',
-                                    initialValue: data.autoplay,
+                                    initialValue: data.video.autoplay,
                                 })(
                                     <Switch />,
                                 )
@@ -33,14 +31,12 @@ export default {
                     <Col span={8}>
                         <Form.Item label="Muted" colon={false}>
                             {
-                                getFieldDecorator('muted', {
+                                getFieldDecorator('video.muted', {
                                     rules: [{
                                         type: 'boolean',
-                                        // required: true,
-                                        // message: 'Please input rotation',
                                     }],
                                     valuePropName: 'checked',
-                                    initialValue: data.muted,
+                                    initialValue: data.video.muted,
                                 })(
                                     <Switch />,
                                 )
@@ -50,14 +46,12 @@ export default {
                     <Col span={8}>
                         <Form.Item label="Loop" colon={false}>
                             {
-                                getFieldDecorator('loop', {
+                                getFieldDecorator('video.loop', {
                                     rules: [{
                                         type: 'boolean',
-                                        // required: true,
-                                        // message: 'Please input rotation',
                                     }],
                                     valuePropName: 'checked',
-                                    initialValue: data.loop,
+                                    initialValue: data.video.loop,
                                 })(
                                     <Switch />,
                                 )
@@ -67,11 +61,7 @@ export default {
                 </Row>
                 <Form.Item label="Video Load Type" colon={false}>
                     {
-                        getFieldDecorator('videoLoadType', {
-                            rules: [{
-                                // required: true,
-                                // message: 'Please select icon',
-                            }],
+                        getFieldDecorator('video.type', {
                             initialValue: videoLoadType,
                         })(
                             <Radio.Group size="large">
@@ -85,12 +75,12 @@ export default {
                     videoLoadType === 'file' ? (
                         <Form.Item label="File" colon={false}>
                             {
-                                getFieldDecorator('file', {
+                                getFieldDecorator('video.file', {
                                     rules: [{
                                         required: true,
                                         message: 'Please select video',
                                     }],
-                                    initialValue: data.file,
+                                    initialValue: data.video.file,
                                 })(
                                     // <FileUpload fileList={data.file ? [data.file] : []} />,
                                     <FileUpload accept="video/*" />,
@@ -100,12 +90,12 @@ export default {
                     ) : (
                         <Form.Item>
                             {
-                                getFieldDecorator('src', {
+                                getFieldDecorator('video.src', {
                                     rules: [{
                                         required: true,
-                                        message: 'Please select image',
+                                        message: 'Please input src',
                                     }],
-                                    initialValue: data.src,
+                                    initialValue: data.video.src,
                                 })(
                                     <UrlModal form={form} />,
                                 )

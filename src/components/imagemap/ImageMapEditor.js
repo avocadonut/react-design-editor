@@ -32,11 +32,8 @@ const propertiesToInclude = [
     'layout',
     'workareaWidth',
     'workareaHeight',
-    'videoLoadType',
-    'autoplay',
+    'video',
     'shadow',
-    'muted',
-    'loop',
     'code',
     'icon',
     'userProperty',
@@ -66,6 +63,12 @@ const defaultOptions = {
         autoplay: true,
         delay: 100,
         duration: 1000,
+    },
+    video: {
+        type: 'file',
+        autoplay: true,
+        muted: false,
+        loop: true,
     },
     userProperty: {},
     trigger: {
@@ -143,7 +146,7 @@ class ImageMapEditor extends Component {
                 }
                 this.canvasRef.handlers.getObjects().forEach((obj) => {
                     if (obj) {
-                        this.canvasRef.animationHandlers.initAnimation(obj, true);
+                        this.canvasRef.canvas.animationTools.initAnimation(obj, true);
                     }
                 });
                 this.setState({
@@ -153,7 +156,7 @@ class ImageMapEditor extends Component {
             }
             this.canvasRef.handlers.getObjects().forEach((obj) => {
                 if (obj) {
-                    this.canvasRef.animationHandlers.initAnimation(obj, true);
+                    this.canvasRef.canvas.animationTools.initAnimation(obj, true);
                 }
             });
             this.setState({
@@ -217,7 +220,7 @@ class ImageMapEditor extends Component {
                 if (selectedItem.type === 'image') {
                     this.canvasRef.handlers.setImageById(selectedItem.id, changedValue);
                 } else if (this.canvasRef.handlers.isElementType(selectedItem.type)) {
-                    this.canvasRef.elementHandlers.setById(selectedItem.id, changedValue);
+                    this.canvasRef.canvas.elementTools.setById(selectedItem.id, changedValue);
                 }
                 return;
             }
@@ -273,6 +276,11 @@ class ImageMapEditor extends Component {
             if (changedKey === 'trigger') {
                 const trigger = Object.assign({}, defaultOptions.trigger, allValues.trigger);
                 this.canvasRef.handlers.set(changedKey, trigger);
+                return;
+            }
+            if (changedKey === 'video') {
+                const video = Object.assign({}, defaultOptions.video, allValues.video);
+                this.canvasRef.handlers.set(changedKey, video);
                 return;
             }
             this.canvasRef.handlers.set(changedKey, changedValue);

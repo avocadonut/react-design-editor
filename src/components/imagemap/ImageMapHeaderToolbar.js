@@ -14,7 +14,7 @@ class ImageMapHeaderToolbar extends Component {
 
     render() {
         const { canvasRef, selectedItem } = this.props;
-        const idCropping = canvasRef ? canvasRef.interactionMode === 'crop' : false;
+        const idCropping = canvasRef ? canvasRef.canvas.interactionMode === 'crop' : false;
         return (
             <FlexBox className="rde-editor-header-toolbar-container" flex="1">
                 <FlexItem className="rde-canvas-toolbar rde-canvas-toolbar-list">
@@ -40,13 +40,13 @@ class ImageMapHeaderToolbar extends Component {
                     </Button>
                 </FlexItem>
                 <FlexItem className="rde-canvas-toolbar rde-canvas-toolbar-alignment">
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.alignmentTools.left()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.canvas.alignmentTools.left()}>
                         <Icon name="align-left" />
                     </Button>
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.alignmentTools.center()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.canvas.alignmentTools.center()}>
                         <Icon name="align-center" />
                     </Button>
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.alignmentTools.right()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.canvas.alignmentTools.right()}>
                         <Icon name="align-right" />
                     </Button>
                 </FlexItem>
@@ -59,13 +59,13 @@ class ImageMapHeaderToolbar extends Component {
                     </Button>
                 </FlexItem>
                 <FlexItem className="rde-canvas-toolbar rde-canvas-toolbar-crop">
-                    <Button className="rde-action-btn" shape="circle" disabled={canvasRef ? canvasRef.cropHandlers.validType() : true} onClick={() => canvasRef.cropHandlers.start()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={canvasRef ? canvasRef.canvas.cropTools.validType() : true} onClick={() => canvasRef.canvas.cropTools.start()}>
                         <Icon name="crop" />
                     </Button>
-                    <Button className="rde-action-btn" shape="circle" disabled={canvasRef ? !canvasRef.cropRect : true} onClick={() => canvasRef.cropHandlers.finish()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={canvasRef ? !canvasRef.canvas.cropTools.cropRect : true} onClick={() => canvasRef.canvas.cropTools.finish()}>
                         <Icon name="check" />
                     </Button>
-                    <Button className="rde-action-btn" shape="circle" disabled={canvasRef ? !canvasRef.cropRect : true} onClick={() => canvasRef.cropHandlers.cancel()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={canvasRef ? !canvasRef.canvas.cropTools.cropRect : true} onClick={() => canvasRef.canvas.cropTools.cancel()}>
                         <Icon name="times" />
                     </Button>
                 </FlexItem>

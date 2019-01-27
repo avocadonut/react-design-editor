@@ -48,7 +48,7 @@ class ImageMapFooterToolbar extends Component {
 
     handlers = {
         selection: () => {
-            this.props.canvasRef.modeHandlers.selection((obj) => {
+            this.props.canvasRef.canvas.modeTools.selection((obj) => {
                 return {
                     selectable: obj.superType !== 'port',
                     evented: true,
@@ -57,7 +57,7 @@ class ImageMapFooterToolbar extends Component {
             this.setState({ interactionMode: 'selection' });
         },
         grab: () => {
-            this.props.canvasRef.modeHandlers.grab();
+            this.props.canvasRef.canvas.modeTools.grab();
             this.setState({ interactionMode: 'grab' });
         },
     }

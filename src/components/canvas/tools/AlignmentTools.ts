@@ -1,14 +1,16 @@
-export interface IAlignmentTools {
-    canvas: any;
+import { ITools } from './Tools';
+import { IStaticCanvas } from '../Canvas';
+
+export interface IAlignmentTools extends ITools {
     left(): void;
     center(): void;
     right(): void;
 }
 
 class AlignmentTools implements IAlignmentTools {
-    canvas: any;
+    canvas: IStaticCanvas;
 
-    constructor(canvas: fabric.Canvas) {
+    constructor(canvas: IStaticCanvas) {
         this.canvas = canvas;
     }
 
