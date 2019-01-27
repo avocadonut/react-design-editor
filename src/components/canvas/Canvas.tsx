@@ -12,7 +12,7 @@ import '../../styles/core/contextmenu.less';
 import AlignmentTools, { IAlignmentTools } from './tools/AlignmentTools';
 import GridTools, { IGridTools } from './tools/GridTools';
 import CropTools, { ICropTools } from './tools/CropTools';
-import { IGeneralTools } from './tools/GeneralTools';
+import GeneralTools, { IGeneralTools } from './tools/GeneralTools';
 import ModeTools, { IModeTools } from './tools/ModeTools';
 import TooltipTools, { ITooltipTools } from './tools/TooltipTools';
 import ZoomTools, { IZoomTools } from './tools/ZoomTools';
@@ -20,6 +20,10 @@ import ElementTools, { IElementTools } from './tools/ElementTools';
 import AnimationTools, { IAnimationTools } from './tools/AnimationTools';
 import VideoTools, { IVideoTools } from './tools/VideoTools';
 import ContextmenuTools, { IContextmenuTools } from './tools/ContextmenuTools';
+import LinkTools, { ILinkTools } from './tools/LinkTools';
+import EventTools, { IEventTools } from './tools/EventTools';
+import NodeTools, { INodeTools } from './tools/NodeTools';
+import PortTools, { IPortTools } from './tools/PortTools';
 
 export interface ICanvasOption extends fabric.ICanvasOptions {
     width?: number;
@@ -101,6 +105,10 @@ export interface IStaticCanvas extends fabric.Canvas {
     animationTools?: IAnimationTools;
     videoTools?: IVideoTools;
     contextmenuTools?: IContextmenuTools;
+    eventTools?: IEventTools;
+    portTools?: IPortTools;
+    nodeTools?: INodeTools;
+    linkTools?: ILinkTools;
 }
 
 export interface IStaticObject extends fabric.Object {
@@ -211,7 +219,7 @@ class Canvas extends Component<ICanvasProps, ICanvasState> {
     canvas: IStaticCanvas & ICanvasOption;
     workarea: IStaticObject & IWorkareaOption;
     objects: IStaticObject[];
-    fabricObjects?: object;
+    fabricObjects?: any;
     keyEvent?: IKeyboardEvent;
     container?: React.RefObject<HTMLDivElement>;
     panning: boolean = false;
@@ -250,22 +258,13 @@ class Canvas extends Component<ICanvasProps, ICanvasState> {
         this.canvas = new fabric.Canvas(`canvas_${id}`, mergedCanvasOption);
         this.canvas.setBackgroundColor(mergedCanvasOption.backgroundColor, this.canvas.renderAll.bind(this.canvas));
         const mergedWorkareaOption = { ...defaultWorkareaOption, ...workareaOption };
-        this.workarea = new fabric.Image(null, mergedWorkareaOption);
+        this.workarea = new fabric.Image(null, mergedWorkareaOption) as IStaticObject & IWorkareaOption;
         this.canvas.add(this.workarea);
         this.objects.push(this.workarea);
         this.canvas.centerObject(this.workarea);
         this.canvas.renderAll();
         this.canvas.id = id;
-        this.canvas.alignmentTools = new AlignmentTools(this.canvas);
-        this.canvas.gridTools = new GridTools(this.canvas, gridOption);
-        this.canvas.cropTools = new CropTools(this.canvas);
-        this.canvas.tooltipTools = new TooltipTools(this.canvas, onTooltip);
-        this.canvas.modeTools = new ModeTools(this.canvas, this.workarea, canvasOption);
-        this.canvas.zoomTools = new ZoomTools(this.canvas, this.workarea, minZoom, maxZoom, onZoom);
-        this.canvas.animationTools = new AnimationTools(this.canvas);
-        this.canvas.elementTools = new ElementTools(this.canvas, this.container, onSelect);
-        this.canvas.contextmenuTools = new ContextmenuTools(this.canvas, onContext);
-        this.canvas.videoTools = new VideoTools(this.canvas, this.container);
+        this.applyTools();
         const { modified, moving, moved, scaling, rotating, mousewheel, mousedown, mousemove, mouseup, mouseout, selection, beforeRender, afterRender } = this.eventHandlers;
         if (editable) {
             this.canvas.interactionMode = 'selection';
@@ -392,6 +391,38 @@ class Canvas extends Component<ICanvasProps, ICanvasState> {
         document.removeEventListener('paste', this.eventHandlers.paste);
         document.removeEventListener('mousedown', this.eventHandlers.onmousedown);
         this.canvas.wrapperEl.removeEventListener('contextmenu', this.eventHandlers.contextmenu);
+    }
+
+    applyTools = () => {
+        const {
+            editable,
+            canvasOption,
+            workareaOption,
+            guidelineOption,
+            gridOption,
+            minZoom,
+            maxZoom,
+            onTooltip,
+            onZoom,
+            onSelect,
+            onContext,
+        } = this.props;
+        this.canvas.generalTools = new GeneralTools(this.canvas, this.workarea,
+            this.objects, this.fabricObjects, this.props);
+        this.canvas.alignmentTools = new AlignmentTools(this.canvas);
+        this.canvas.gridTools = new GridTools(this.canvas, gridOption);
+        this.canvas.cropTools = new CropTools(this.canvas);
+        this.canvas.tooltipTools = new TooltipTools(this.canvas, onTooltip);
+        this.canvas.modeTools = new ModeTools(this.canvas, this.workarea, canvasOption);
+        this.canvas.zoomTools = new ZoomTools(this.canvas, this.workarea, minZoom, maxZoom, onZoom);
+        this.canvas.animationTools = new AnimationTools(this.canvas);
+        this.canvas.elementTools = new ElementTools(this.canvas, this.container, onSelect);
+        this.canvas.contextmenuTools = new ContextmenuTools(this.canvas, onContext);
+        this.canvas.videoTools = new VideoTools(this.canvas, this.container);
+        this.canvas.linkTools = new LinkTools(this.canvas);
+        this.canvas.portTools = new PortTools(this.canvas);
+        this.canvas.nodeTools = new NodeTools(this.canvas);
+        this.canvas.eventTools = new EventTools(this.canvas);
     }
 
     handlers = {
