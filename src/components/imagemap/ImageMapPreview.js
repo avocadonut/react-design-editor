@@ -12,7 +12,7 @@ class ImageMapPreview extends Component {
         preview: PropTypes.bool,
         onChangePreview: PropTypes.func,
         onTooltip: PropTypes.func,
-        onAction: PropTypes.func,
+        onLink: PropTypes.func,
     }
 
     state = {

@@ -70,7 +70,7 @@ class WorkflowEditor extends Component {
                 this.canvasHandlers.onSelect(null);
                 return;
             }
-            this.canvasRef.handlers.select(target);
+            this.canvasRef.canvas.generalTools.select(target);
         },
         onSelect: (target) => {
             this.nodeConfigurationRef.props.form.validateFields((err) => {
@@ -143,7 +143,7 @@ class WorkflowEditor extends Component {
                     if (viewportTransform) {
                         this.canvasRef.canvas.setViewportTransform(viewportTransform);
                     }
-                    this.canvasRef.handlers.importJSON(objects, () => {
+                    this.canvasRef.canvas.generalTools.importJSON(objects, () => {
                         this.hideLoading();
                         this.canvasRef.canvas.setZoom(this.state.zoomRatio);
                     });
@@ -181,7 +181,7 @@ class WorkflowEditor extends Component {
             const nodes = [];
             const links = [];
             try {
-                this.canvasRef.handlers.getObjects().forEach((obj) => {
+                this.canvasRef.canvas.generalTools.getObjects().forEach((obj) => {
                     if (obj.superType === 'node') {
                         if (obj.errorFlag.visible) {
                             throw new NodeConfigurationError(i18n.t('rule-chains.validate-fields-error'), obj.id, obj.name);
@@ -221,7 +221,7 @@ class WorkflowEditor extends Component {
                 return workflow;
             } catch (error) {
                 console.error(`[ERROR] ${this.constructor.name} exportJsonCode()`, error);
-                this.canvasRef.handlers.selectById(error.nodeId);
+                this.canvasRef.canvas.generalTools.selectById(error.nodeId);
                 message.error(error.message);
                 this.hideLoading();
             }
@@ -247,7 +247,7 @@ class WorkflowEditor extends Component {
                     this.canvasRef.canvas.renderAll();
                 }, 0);
                 const configuration = Object.assign({}, selectedItem.configuration, changedValues.configuration);
-                this.canvasRef.handlers.setObject({
+                this.canvasRef.canvas.generalTools.setObject({
                     configuration,
                     name: allValues.name,
                     description: allValues.description,

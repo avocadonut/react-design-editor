@@ -2,13 +2,16 @@ import { fabric } from 'fabric';
 import uuid from 'uuid/v4';
 
 import Tools, { ITools } from './Tools';
-import { IStaticObject, IStaticCanvas } from '../Canvas';
+import { IStaticObject, IStaticCanvas, IKeyboardEvent } from '../Canvas';
 
 export interface IObjectEvent {
     mousedown?(opt: fabric.IEvent): void;
 }
 
 export interface IEventTools extends ITools {
+    prevTarget?: IStaticObject;
+    currentWidth?: number;
+    keyEvent?: IKeyboardEvent;
     object?: IObjectEvent;
     modified?(opt: fabric.IEvent): void;
     moving?(opt: fabric.IEvent): void;
@@ -32,6 +35,15 @@ export interface IEventTools extends ITools {
 }
 
 class EventTools extends Tools implements IEventTools {
+    currentWidth: number;
+    prevTarget?: IStaticObject;
+    keyEvent: IKeyboardEvent;
+
+    constructor(toolOption: ITools, keyEvent: IKeyboardEvent) {
+        super(toolOption);
+        this.keyEvent = keyEvent;
+    }
+
     object: IObjectEvent = {
         mousedown: (opt: fabric.IEvent) => {
             const target = opt.target as IStaticObject;
@@ -44,7 +56,7 @@ class EventTools extends Tools implements IEventTools {
         },
     };
 
-    modified(opt: fabric.IEvent) {
+    modified = (opt: fabric.IEvent) => {
         const target = opt.target as IStaticObject;
         const { onModified } = this;
         if (onModified) {
@@ -58,7 +70,7 @@ class EventTools extends Tools implements IEventTools {
         }
     }
 
-    moving(opt: fabric.IEvent) {
+    moving = (opt: fabric.IEvent) => {
         const target = opt.target as IStaticObject;
         if (this.canvas.interactionMode === 'crop') {
             this.canvas.cropTools.moving(opt);
@@ -82,12 +94,12 @@ class EventTools extends Tools implements IEventTools {
         }
     }
 
-    moved(opt: fabric.IEvent) {
+    moved = (opt: fabric.IEvent) => {
         const { target } = opt;
         this.canvas.gridTools.setCoords(target);
     }
 
-    scaling(opt: fabric.IEvent) {
+    scaling = (opt: fabric.IEvent) => {
         const target = opt.target as IStaticObject;
         if (this.canvas.interactionMode === 'crop') {
             this.canvas.cropTools.resize(opt);
@@ -107,7 +119,7 @@ class EventTools extends Tools implements IEventTools {
         }
     }
 
-    rotating(opt: fabric.IEvent) {
+    rotating = (opt: fabric.IEvent) => {
         const target = opt.target as IStaticObject;
         if (this.canvas.generalTools.isElementType(target.type)) {
             const el = this.canvas.elementTools.findById(target.id);
@@ -116,7 +128,7 @@ class EventTools extends Tools implements IEventTools {
         }
     }
 
-    arrowmoving(e: KeyboardEvent): void {
+    arrowmoving = (e: KeyboardEvent): void => {
         const activeObject = this.canvas.getActiveObject() as IStaticObject;
         if (!activeObject) {
             return null;
@@ -146,7 +158,7 @@ class EventTools extends Tools implements IEventTools {
         }
     }
 
-    mousewheel(opt: fabric.IEvent) {
+    mousewheel = (opt: fabric.IEvent) => {
         const { zoomEnabled } = this;
         if (!zoomEnabled) {
             return;
@@ -164,7 +176,7 @@ class EventTools extends Tools implements IEventTools {
         opt.e.stopPropagation();
     }
 
-    mousedown(opt: fabric.IEvent) {
+    mousedown = (opt: fabric.IEvent) => {
         if (this.canvas.interactionMode === 'grab') {
             this.canvas.panning = true;
             return;
@@ -178,7 +190,7 @@ class EventTools extends Tools implements IEventTools {
                 });
             }
             if (target && target.type === 'fromPort') {
-                if (this.canvas.interactionMode === 'link' && this.activeLine) {
+                if (this.canvas.interactionMode === 'link' && this.canvas.linkTools.activeLine) {
                     console.warn('이미 링크를 그리는 중입니다.');
                     return;
                 }
@@ -192,15 +204,15 @@ class EventTools extends Tools implements IEventTools {
                 } else {
                     toPort = target;
                 }
-                if (toPort.links.some(link => link.fromNode.id === this.activeLine.fromNode)) {
+                if (toPort.links.some(link => link.fromNode.id === this.canvas.linkTools.activeLine.fromNode)) {
                     console.warn('중복된 연결을 할 수 없습니다.');
                     return;
                 }
                 this.canvas.linkTools.generate(toPort);
                 return;
             }
-            this.viewportTransform = this.canvas.viewportTransform;
-            this.zoom = this.canvas.getZoom();
+            this.canvas.guidelineTools.viewportTransform = this.canvas.viewportTransform;
+            this.canvas.guidelineTools.zoom = this.canvas.getZoom();
             if (this.canvas.interactionMode === 'selection') {
                 if (target && target.superType === 'link') {
                     target.set({
@@ -210,8 +222,8 @@ class EventTools extends Tools implements IEventTools {
                 this.prevTarget = target;
             }
             if (this.canvas.interactionMode === 'polygon') {
-                if (target && this.pointArray.length && target.id === this.pointArray[0].id) {
-                    this.canvas.drawingTools.polygon.generatePolygon(this.pointArray);
+                if (target && this.canvas.drawingTools.pointArray.length && target.id === this.canvas.drawingTools.pointArray[0].id) {
+                    this.canvas.drawingTools.polygon.generatePolygon(this.canvas.drawingTools.pointArray);
                 } else {
                     this.canvas.drawingTools.polygon.addPoint(opt);
                 }
@@ -242,23 +254,23 @@ class EventTools extends Tools implements IEventTools {
             }
         }
         if (this.canvas.interactionMode === 'polygon') {
-            if (this.activeLine && this.activeLine.class === 'line') {
+            if (this.canvas.drawingTools.activeLine && this.canvas.drawingTools.activeLine.class === 'line') {
                 const pointer = this.canvas.getPointer(opt.e);
-                this.activeLine.set({ x2: pointer.x, y2: pointer.y });
-                const points = this.activeShape.get('points');
-                points[this.pointArray.length] = {
+                this.canvas.drawingTools.activeLine.set({ x2: pointer.x, y2: pointer.y });
+                const points = this.canvas.drawingTools.activeShape.get('points');
+                points[this.canvas.drawingTools.pointArray.length] = {
                     x: pointer.x,
                     y: pointer.y,
                 };
-                this.activeShape.set({
+                this.canvas.drawingTools.activeShape.set({
                     points,
                 });
                 this.canvas.requestRenderAll();
             }
         } else if (this.canvas.interactionMode === 'link') {
-            if (this.activeLine && this.activeLine.class === 'line') {
+            if (this.canvas.linkTools.activeLine && this.canvas.linkTools.activeLine.class === 'line') {
                 const pointer = this.canvas.getPointer(opt.e);
-                this.activeLine.set({ x2: pointer.x, y2: pointer.y });
+                this.canvas.linkTools.activeLine.set({ x2: pointer.x, y2: pointer.y });
             }
             this.canvas.requestRenderAll();
         }
@@ -276,13 +288,13 @@ class EventTools extends Tools implements IEventTools {
         this.canvas.renderAll();
     }
 
-    mouseout(opt: fabric.IEvent) {
+    mouseout = (opt: fabric.IEvent) => {
         if (!opt.target) {
             this.canvas.tooltipTools.hide();
         }
     }
 
-    selection(opt: fabric.IEvent) {
+    selection = (opt: fabric.IEvent) => {
         const { onSelect, activeSelection } = this;
         const { target } = opt;
         if (target && target.type === 'activeSelection') {
@@ -295,26 +307,24 @@ class EventTools extends Tools implements IEventTools {
         }
     }
 
-    beforeRender(opt: fabric.IEvent) {
-        console.log(this.canvas);
+    beforeRender = (opt: fabric.IEvent) => {
         if (this.canvas) {
-            this.canvas.clearContext(this.canvas.getContext());
+            this.canvas.clearContext(this.canvas.contextTop);
         }
     }
 
-    afterRender(opt: fabric.IEvent) {
-        console.log(this.canvas);
+    afterRender = (opt: fabric.IEvent) => {
         for (let i = this.canvas.guidelineTools.verticalLines.length; i--;) {
-            this.canvas.guidelineTools.drawVerticalLine(this.verticalLines[i]);
+            this.canvas.guidelineTools.drawVerticalLine(this.canvas.guidelineTools.verticalLines[i]);
         }
         for (let i = this.canvas.guidelineTools.horizontalLines.length; i--;) {
-            this.canvas.guidelineTools.drawHorizontalLine(this.horizontalLines[i]);
+            this.canvas.guidelineTools.drawHorizontalLine(this.canvas.guidelineTools.horizontalLines[i]);
         }
         this.canvas.guidelineTools.verticalLines.length = 0;
         this.canvas.guidelineTools.horizontalLines.length = 0;
     }
 
-    resize(currentWidth: number, currentHeight: number, nextWidth: number, nextHeight: number) {
+    resize = (currentWidth: number, currentHeight: number, nextWidth: number, nextHeight: number) => {
         this.currentWidth = currentWidth;
         this.canvas.setWidth(nextWidth).setHeight(nextHeight);
         if (!this.workarea) {
@@ -410,7 +420,7 @@ class EventTools extends Tools implements IEventTools {
         this.canvas.renderAll();
     }
 
-    paste(e: ClipboardEvent): void {
+    paste = (e: ClipboardEvent): void => {
         if (this.canvas.wrapperEl !== document.activeElement) {
             return null;
         }
@@ -455,7 +465,7 @@ class EventTools extends Tools implements IEventTools {
         }
     }
 
-    keydown(e: KeyboardEvent): void {
+    keydown = (e: KeyboardEvent): void => {
         if (this.canvas.wrapperEl !== document.activeElement) {
             return null;
         }
@@ -488,7 +498,7 @@ class EventTools extends Tools implements IEventTools {
         }
     }
 
-    contextmenu(e: MouseEvent) {
+    contextmenu = (e: MouseEvent) => {
         e.preventDefault();
         const { editable, onContext } = this;
         if (editable && onContext) {
@@ -500,7 +510,7 @@ class EventTools extends Tools implements IEventTools {
         }
     }
 
-    onmousedown(e: MouseEvent) {
+    onmousedown = (e: MouseEvent) => {
         this.canvas.contextmenuTools.hide();
     }
 }

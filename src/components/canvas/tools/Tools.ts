@@ -7,7 +7,6 @@ import {
     IWorkareaOption,
     IGuidelineOption,
     IGridOption,
-    IKeyboardEvent,
     IStaticObject,
 } from '../Canvas';
 
@@ -19,7 +18,6 @@ export interface ITools {
     workareaOption?: IWorkareaOption;
     guidelineOption?: IGuidelineOption;
     gridOption?: IGridOption;
-    keyEvent?: IKeyboardEvent;
     container?: React.RefObject<HTMLDivElement>;
     objects?: IStaticObject[];
     fabricObjects?: any[];
@@ -45,7 +43,6 @@ export default class Tools {
     workareaOption?: IWorkareaOption;
     guidelineOption?: IGuidelineOption;
     gridOption?: IGridOption;
-    keyEvent?: IKeyboardEvent;
     container?: React.RefObject<HTMLDivElement>;
     objects?: IStaticObject[];
     fabricObjects?: any[];
@@ -70,7 +67,6 @@ export default class Tools {
         this.workareaOption = toolOption.workareaOption;
         this.guidelineOption = toolOption.guidelineOption;
         this.gridOption = toolOption.gridOption;
-        this.keyEvent = toolOption.keyEvent;
         this.container = toolOption.container;
         this.objects = toolOption.objects;
         this.fabricObjects = toolOption.fabricObjects;

@@ -91,7 +91,7 @@ class ImageMapItems extends Component {
     }
 
     handlers = {
-        onAddItem: (item, centered) => {
+        onAddItem: (item, centered = true) => {
             const { canvasRef } = this.props;
             if (canvasRef.workarea.layout === 'responsive') {
                 if (!canvasRef.workarea._element) {
@@ -103,7 +103,7 @@ class ImageMapItems extends Component {
             }
             const id = uuid();
             const option = Object.assign({}, item.option, { id });
-            canvasRef.handlers.add(option, centered);
+            canvasRef.canvas.generalTools.add(option, centered);
         },
         onDrawingItem: (item) => {
             const { canvasRef } = this.props;
@@ -115,7 +115,7 @@ class ImageMapItems extends Component {
                     return;
                 }
             }
-            canvasRef.drawingHandlers.polygon.initDraw();
+            canvasRef.canvas.drawingTools.polygon.initDraw();
         },
         onChangeActiveKey: (activeKey) => {
             this.setState({

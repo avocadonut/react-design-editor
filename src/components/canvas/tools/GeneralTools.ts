@@ -454,7 +454,9 @@ class GeneralTools extends Tools implements IGeneralTools {
             });
             this.clipboard = newClipboard;
             this.canvas.setActiveObject(clonedObj);
-            this.canvas.portTools.createPort(clonedObj);
+            if (clonedObj.superType === 'node') {
+                this.canvas.portTools.createPort(clonedObj);
+            }
             this.canvas.requestRenderAll();
         }, propertiesToInclude);
     }
@@ -651,7 +653,10 @@ class GeneralTools extends Tools implements IGeneralTools {
             canvas.renderAll();
             return;
         }
-        const activeSelection = new fabric.ActiveSelection(filteredObjects, this.activeSelection);
+        const activeSelection = new fabric.ActiveSelection(filteredObjects, {
+            canvas: this.canvas,
+            ...this.activeSelection,
+        });
         canvas.setActiveObject(activeSelection);
         canvas.renderAll();
     }
@@ -705,14 +710,15 @@ class GeneralTools extends Tools implements IGeneralTools {
         let prevTop = 0;
         this.canvas.setBackgroundColor(this.canvasOption.backgroundColor, null);
         const workareaExist = json.filter((obj: IStaticObject) => obj.id === 'workarea');
-        if (!this.workarea) {
-            this.workarea = new fabric.Image(null, {
-                ...defaultWorkareaOption,
-                ...this.workareaOption,
-            }) as IStaticWorkarea;
-            this.canvas.add(this.workarea);
-            this.objects.push(this.workarea);
-        }
+        // if (!this.workarea) {
+        //     this.workarea = new fabric.Image(null, {
+        //         ...defaultWorkareaOption,
+        //         ...this.workareaOption,
+        //     }) as IStaticWorkarea;
+        //     this.canvas.add(this.workarea);
+        //     this.objects.push(this.workarea);
+        // }
+        console.log(this.canvas);
         if (!workareaExist.length) {
             this.canvas.centerObject(this.workarea);
             this.workarea.setCoords();
@@ -726,6 +732,7 @@ class GeneralTools extends Tools implements IGeneralTools {
             this.canvas.centerObject(this.workarea);
             this.canvas.workareaTools.setImage(workarea.src, true);
             this.workarea.setCoords();
+            console.log(this.workarea);
         }
         setTimeout(() => {
             json.forEach((obj: IStaticObject) => {
@@ -833,7 +840,7 @@ class GeneralTools extends Tools implements IGeneralTools {
         }
     }
 
-    clear(isWorkarea?: boolean) {
+    clear(isWorkarea = false) {
         const { canvas } = this;
         const ids = canvas.getObjects().reduce((prev, curr: IStaticObject) => {
             if (this.isElementType(curr.type)) {
@@ -845,7 +852,7 @@ class GeneralTools extends Tools implements IGeneralTools {
         this.canvas.elementTools.removeByIds(ids);
         if (isWorkarea) {
             canvas.clear();
-            this.workarea = null;
+            // this.workarea = null;
         } else {
             canvas.getObjects().forEach((obj: IStaticObject) => {
                 if (obj.id !== 'workarea') {

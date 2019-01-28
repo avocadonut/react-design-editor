@@ -107,25 +107,25 @@ class ImageMapFooterToolbar extends Component {
                     <Button.Group>
                         <CommonButton
                             style={{ borderBottomLeftRadius: '8px', borderTopLeftRadius: '8px' }}
-                            onClick={() => { canvasRef.zoomHandlers.zoomOut(); }}
+                            onClick={() => { canvasRef.canvas.zoomTools.zoomOut(); }}
                             icon="search-minus"
                             tooltipTitle={i18n.t('rule-chains.tooltip-zoom-out')}
                         />
                         <CommonButton
-                            onClick={() => { canvasRef.zoomHandlers.zoomOneToOne(); }}
+                            onClick={() => { canvasRef.canvas.zoomTools.zoomOneToOne(); }}
                             tooltipTitle={i18n.t('rule-chains.tooltip-one-to-one')}
                         >
                             {zoomValue}%
                         </CommonButton>
                         <CommonButton
-                            onClick={() => { canvasRef.zoomHandlers.zoomToFit(); }}
+                            onClick={() => { canvasRef.canvas.zoomTools.zoomToFit(); }}
                             tooltipTitle={i18n.t('rule-chains.tooltip-one-to-one')}
                         >
                             {'Fit'}
                         </CommonButton>
                         <CommonButton
                             style={{ borderBottomRightRadius: '8px', borderTopRightRadius: '8px' }}
-                            onClick={() => { canvasRef.zoomHandlers.zoomIn(); }}
+                            onClick={() => { canvasRef.canvas.zoomTools.zoomIn(); }}
                             icon="search-plus"
                             tooltipTitle={i18n.t('rule-chains.tooltip-zoom-in')}
                         />

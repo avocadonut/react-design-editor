@@ -26,16 +26,16 @@ class ImageMapHeaderToolbar extends Component {
                     </div>
                 </FlexItem>
                 <FlexItem className="rde-canvas-toolbar rde-canvas-toolbar-alignment">
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={e => canvasRef.handlers.bringForward()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={e => canvasRef.canvas.generalTools.bringForward()}>
                         <Icon name="angle-up" />
                     </Button>
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={e => canvasRef.handlers.sendBackwards()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={e => canvasRef.canvas.generalTools.sendBackwards()}>
                         <Icon name="angle-down" />
                     </Button>
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={e => canvasRef.handlers.bringToFront()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={e => canvasRef.canvas.generalTools.bringToFront()}>
                         <Icon name="angle-double-up" />
                     </Button>
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={e => canvasRef.handlers.sendToBack()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={e => canvasRef.canvas.generalTools.sendToBack()}>
                         <Icon name="angle-double-down" />
                     </Button>
                 </FlexItem>
@@ -51,10 +51,10 @@ class ImageMapHeaderToolbar extends Component {
                     </Button>
                 </FlexItem>
                 <FlexItem className="rde-canvas-toolbar rde-canvas-toolbar-group">
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.handlers.toGroup()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.canvas.generalTools.toGroup()}>
                         <Icon name="object-group" />
                     </Button>
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.handlers.toActiveSelection()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.canvas.generalTools.toActiveSelection()}>
                         <Icon name="object-ungroup" />
                     </Button>
                 </FlexItem>
@@ -70,10 +70,10 @@ class ImageMapHeaderToolbar extends Component {
                     </Button>
                 </FlexItem>
                 <FlexItem className="rde-canvas-toolbar rde-canvas-toolbar-operation">
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.handlers.duplicate()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.canvas.generalTools.duplicate()}>
                         <Icon name="clone" />
                     </Button>
-                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.handlers.remove()}>
+                    <Button className="rde-action-btn" shape="circle" disabled={idCropping} onClick={() => canvasRef.canvas.generalTools.remove()}>
                         <Icon name="trash" />
                     </Button>
                 </FlexItem>

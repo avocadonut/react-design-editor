@@ -32,7 +32,7 @@ class TooltipTools extends Tools implements ITooltipTools {
 
     show = debounce(async (target: IStaticObject) => {
         if (target.tooltip && target.tooltip.enabled) {
-            if (this.onTooltip) {
+            if (!this.onTooltip) {
                 return;
             }
             while (this.tooltipRef.hasChildNodes()) {

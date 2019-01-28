@@ -134,7 +134,7 @@ class ImageMapEditor extends Component {
                 this.canvasHandlers.onSelect(null);
                 return;
             }
-            this.canvasRef.handlers.select(target);
+            this.canvasRef.canvas.generalTools.select(target);
         },
         onSelect: (target) => {
             if (target
@@ -144,7 +144,7 @@ class ImageMapEditor extends Component {
                 if (this.state.selectedItem && target.id === this.state.selectedItem.id) {
                     return;
                 }
-                this.canvasRef.handlers.getObjects().forEach((obj) => {
+                this.canvasRef.canvas.generalTools.getObjects().forEach((obj) => {
                     if (obj) {
                         this.canvasRef.canvas.animationTools.initAnimation(obj, true);
                     }
@@ -154,7 +154,7 @@ class ImageMapEditor extends Component {
                 });
                 return;
             }
-            this.canvasRef.handlers.getObjects().forEach((obj) => {
+            this.canvasRef.canvas.generalTools.getObjects().forEach((obj) => {
                 if (obj) {
                     this.canvasRef.canvas.animationTools.initAnimation(obj, true);
                 }
@@ -202,7 +202,7 @@ class ImageMapEditor extends Component {
                 return;
             }
             if (changedKey === 'width' || changedKey === 'height') {
-                this.canvasRef.handlers.scaleToResize(allValues.width, allValues.height);
+                this.canvasRef.canvas.generalTools.scaleToResize(allValues.width, allValues.height);
                 return;
             }
             if (changedKey === 'lock') {
@@ -218,84 +218,84 @@ class ImageMapEditor extends Component {
             }
             if (changedKey === 'file' || changedKey === 'src' || changedKey === 'code') {
                 if (selectedItem.type === 'image') {
-                    this.canvasRef.handlers.setImageById(selectedItem.id, changedValue);
-                } else if (this.canvasRef.handlers.isElementType(selectedItem.type)) {
+                    this.canvasRef.canvas.generalTools.setImageById(selectedItem.id, changedValue);
+                } else if (this.canvasRef.canvas.generalTools.isElementType(selectedItem.type)) {
                     this.canvasRef.canvas.elementTools.setById(selectedItem.id, changedValue);
                 }
                 return;
             }
             if (changedKey === 'link') {
                 const link = Object.assign({}, defaultOptions.link, allValues.link);
-                this.canvasRef.handlers.set(changedKey, link);
+                this.canvasRef.canvas.generalTools.set(changedKey, link);
                 return;
             }
             if (changedKey === 'tooltip') {
                 const tooltip = Object.assign({}, defaultOptions.tooltip, allValues.tooltip);
-                this.canvasRef.handlers.set(changedKey, tooltip);
+                this.canvasRef.canvas.generalTools.set(changedKey, tooltip);
                 return;
             }
             if (changedKey === 'animation') {
                 const animation = Object.assign({}, defaultOptions.animation, allValues.animation);
-                this.canvasRef.handlers.set(changedKey, animation);
+                this.canvasRef.canvas.generalTools.set(changedKey, animation);
                 return;
             }
             if (changedKey === 'icon') {
                 const { unicode, styles } = changedValue[Object.keys(changedValue)[0]];
                 const uni = parseInt(unicode, 16);
                 if (styles[0] === 'brands') {
-                    this.canvasRef.handlers.set('fontFamily', 'Font Awesome 5 Brands');
+                    this.canvasRef.canvas.generalTools.set('fontFamily', 'Font Awesome 5 Brands');
                 } else if (styles[0] === 'regular') {
-                    this.canvasRef.handlers.set('fontFamily', 'Font Awesome 5 Regular');
+                    this.canvasRef.canvas.generalTools.set('fontFamily', 'Font Awesome 5 Regular');
                 } else {
-                    this.canvasRef.handlers.set('fontFamily', 'Font Awesome 5 Free');
+                    this.canvasRef.canvas.generalTools.set('fontFamily', 'Font Awesome 5 Free');
                 }
-                this.canvasRef.handlers.set('text', String.fromCodePoint(uni));
-                this.canvasRef.handlers.set('icon', changedValue);
+                this.canvasRef.canvas.generalTools.set('text', String.fromCodePoint(uni));
+                this.canvasRef.canvas.generalTools.set('icon', changedValue);
                 return;
             }
             if (changedKey === 'shadow') {
                 if (allValues.shadow.enabled) {
-                    this.canvasRef.handlers.setShadow(changedKey, allValues.shadow);
+                    this.canvasRef.canvas.generalTools.setShadow(changedKey, allValues.shadow);
                 } else {
-                    this.canvasRef.handlers.setShadow(changedKey, null);
+                    this.canvasRef.canvas.generalTools.setShadow(changedKey, null);
                 }
                 return;
             }
             if (changedKey === 'fontWeight') {
-                this.canvasRef.handlers.set(changedKey, changedValue ? 'bold' : 'normal');
+                this.canvasRef.canvas.generalTools.set(changedKey, changedValue ? 'bold' : 'normal');
                 return;
             }
             if (changedKey === 'fontStyle') {
-                this.canvasRef.handlers.set(changedKey, changedValue ? 'italic' : 'normal');
+                this.canvasRef.canvas.generalTools.set(changedKey, changedValue ? 'italic' : 'normal');
                 return;
             }
             if (changedKey === 'textAlign') {
-                this.canvasRef.handlers.set(changedKey, Object.keys(changedValue)[0]);
+                this.canvasRef.canvas.generalTools.set(changedKey, Object.keys(changedValue)[0]);
                 return;
             }
             if (changedKey === 'trigger') {
                 const trigger = Object.assign({}, defaultOptions.trigger, allValues.trigger);
-                this.canvasRef.handlers.set(changedKey, trigger);
+                this.canvasRef.canvas.generalTools.set(changedKey, trigger);
                 return;
             }
             if (changedKey === 'video') {
                 const video = Object.assign({}, defaultOptions.video, allValues.video);
-                this.canvasRef.handlers.set(changedKey, video);
+                this.canvasRef.canvas.generalTools.set(changedKey, video);
                 return;
             }
-            this.canvasRef.handlers.set(changedKey, changedValue);
+            this.canvasRef.canvas.generalTools.set(changedKey, changedValue);
         },
         onChangeWokarea: (changedKey, changedValue, allValues) => {
             if (changedKey === 'layout') {
-                this.canvasRef.workareaHandlers.setLayout(changedValue);
+                this.canvasRef.canvas.workareaTools.setLayout(changedValue);
                 return;
             }
             if (changedKey === 'file' || changedKey === 'src') {
-                this.canvasRef.workareaHandlers.setImage(changedValue);
+                this.canvasRef.canvas.workareaTools.setImage(changedValue);
                 return;
             }
             if (changedKey === 'width' || changedKey === 'height') {
-                this.canvasRef.handlers.originScaleToResize(this.canvasRef.workarea, allValues.width, allValues.height);
+                this.canvasRef.canvas.generalTools.originScaleToResize(this.canvasRef.workarea, allValues.width, allValues.height);
                 this.canvasRef.canvas.centerObject(this.canvasRef.workarea);
                 return;
             }
@@ -354,13 +354,13 @@ class ImageMapEditor extends Component {
             if (target.type === 'activeSelection') {
                 return (
                     <Menu>
-                        <Menu.Item onClick={() => { this.canvasRef.handlers.toGroup(); }}>
+                        <Menu.Item onClick={() => { this.canvasRef.canvas.generalTools.toGroup(); }}>
                             {'Group'}
                         </Menu.Item>
-                        <Menu.Item onClick={() => { this.canvasRef.handlers.duplicate(); }}>
+                        <Menu.Item onClick={() => { this.canvasRef.canvas.generalTools.duplicate(); }}>
                             {'Clone'}
                         </Menu.Item>
-                        <Menu.Item onClick={() => { this.canvasRef.handlers.remove(); }}>
+                        <Menu.Item onClick={() => { this.canvasRef.canvas.generalTools.remove(); }}>
                             {'Delete'}
                         </Menu.Item>
                     </Menu>
@@ -369,13 +369,13 @@ class ImageMapEditor extends Component {
             if (target.type === 'group') {
                 return (
                     <Menu>
-                        <Menu.Item onClick={() => { this.canvasRef.handlers.toActiveSelection(); }}>
+                        <Menu.Item onClick={() => { this.canvasRef.canvas.generalTools.toActiveSelection(); }}>
                             {'Ungroup'}
                         </Menu.Item>
-                        <Menu.Item onClick={() => { this.canvasRef.handlers.duplicate(); }}>
+                        <Menu.Item onClick={() => { this.canvasRef.canvas.generalTools.duplicate(); }}>
                             {'Clone'}
                         </Menu.Item>
-                        <Menu.Item onClick={() => { this.canvasRef.handlers.remove(); }}>
+                        <Menu.Item onClick={() => { this.canvasRef.canvas.generalTools.remove(); }}>
                             {'Delete'}
                         </Menu.Item>
                     </Menu>
@@ -383,10 +383,10 @@ class ImageMapEditor extends Component {
             }
             return (
                 <Menu>
-                    <Menu.Item onClick={() => { this.canvasRef.handlers.duplicateById(target.id); }}>
+                    <Menu.Item onClick={() => { this.canvasRef.canvas.generalTools.duplicateById(target.id); }}>
                         {'Clone'}
                     </Menu.Item>
-                    <Menu.Item onClick={() => { this.canvasRef.handlers.removeById(target.id); }}>
+                    <Menu.Item onClick={() => { this.canvasRef.canvas.generalTools.removeById(target.id); }}>
                         {'Delete'}
                     </Menu.Item>
                 </Menu>
@@ -400,16 +400,16 @@ class ImageMapEditor extends Component {
                 preview: typeof checked === 'object' ? false : checked,
             }, () => {
                 if (this.state.preview) {
-                    const data = this.canvasRef.handlers.exportJSON().objects.filter((obj) => {
+                    const data = this.canvasRef.canvas.generalTools.exportJSON().objects.filter((obj) => {
                         if (!obj.id) {
                             return false;
                         }
                         return true;
                     });
-                    this.preview.canvasRef.handlers.importJSON(data);
+                    this.preview.canvasRef.canvas.generalTools.importJSON(data);
                     return;
                 }
-                this.preview.canvasRef.handlers.clear(true);
+                this.preview.canvasRef.canvas.generalTools.clear(false);
             });
         },
         onProgress: (progress) => {
@@ -436,14 +436,14 @@ class ImageMapEditor extends Component {
                             dataSources,
                         });
                         if (objects) {
-                            this.canvasRef.handlers.clear(true);
+                            this.canvasRef.canvas.generalTools.clear(true);
                             const data = objects.filter((obj) => {
                                 if (!obj.id) {
                                     return false;
                                 }
                                 return true;
                             });
-                            this.canvasRef.handlers.importJSON(JSON.stringify(data));
+                            this.canvasRef.canvas.generalTools.importJSON(JSON.stringify(data));
                         }
                     };
                     reader.onloadend = () => {
@@ -470,7 +470,7 @@ class ImageMapEditor extends Component {
         },
         onDownload: () => {
             this.showLoading(true);
-            const objects = this.canvasRef.handlers.exportJSON().objects.filter((obj) => {
+            const objects = this.canvasRef.canvas.generalTools.exportJSON().objects.filter((obj) => {
                 if (!obj.id) {
                     return false;
                 }
