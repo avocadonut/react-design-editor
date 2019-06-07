@@ -236,7 +236,7 @@ class ImageMapItems extends Component {
                 style={{ justifyContent: this.state.collapse ? 'center' : null }}
             >
                 <span className="rde-editor-items-item-icon">
-                    <Icon name={item.icon.name} prefix={item.icon.prefix} style={item.icon.style} />
+                    <Icon name={item.icon.name} prefix={item.icon.prefix} style={item.icon.style} color='brown'/>
                 </span>
                 {
                     this.state.collapse ? null : (
@@ -257,7 +257,11 @@ class ImageMapItems extends Component {
                 style={{ justifyContent: this.state.collapse ? 'center' : null }}
             >
                 <span className="rde-editor-items-item-icon">
-                    <Icon name={item.icon.name} prefix={item.icon.prefix} style={item.icon.style} />
+                    <Icon name={item.icon.name} prefix={item.icon.prefix} style={item.icon.style} 
+                        color={ item.type === 'marker' ? 'red' : item.type === 'text' ? 'green' : 
+                        item.type === 'image' ? 'blue' : item.type === 'shape' ? 'purple' :
+                        item.type === 'dom_element' ? 'black' : null }
+                    />
                 </span>
                 {
                     this.state.collapse ? null : (

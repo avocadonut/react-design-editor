@@ -2,7 +2,7 @@
     "imagemap": {
         "imagemap": "Image Map",
         "imagemap-editing-confirm": "The image map contents have been modified. Do you want to do that anyway?",
-        "imagemap-editor": "Image Map Editor",
+        "imagemap-editor": "Ad Builder",
         "marker": {
             "choose-icon": "Choose icon from Fontawesome",
             "search-icon": "Search {{length}} icons for..."
@@ -45,6 +45,22 @@
             "file-upload": "File Upload",
             "image-url": "Image URL"
         }
+    },
+    "selecttemplate": {
+        "selecttemplate": "Select Template",
+        "workflow-list": "Workflow List",
+        "workflow-editor": "Workflow Editor",
+        "workflow-info": "Workflow Info",
+        "workflow-editing-confirm": "Workflow content has been modified. Do you want to do that anyway?",
+        "node-configuration": "Node Configuration",
+        "variables": "Global Parameters",
+        "variables-add": "Add Global Parameters",
+        "variables-modify": "Modify Global Parameters",
+        "virtual-button-execute-failed": "{{name}} execute failed",
+        "virtual-button-execute-success": "{{name}} execute success",
+        "validate-fields-error": "A node with the wrong setting exists.",
+        "node-name-required": "Please input node name",
+        "node-description-required": "Please input node description"
     },
     "workflow": {
         "workflow": "Workflow",

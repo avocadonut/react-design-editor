@@ -19,7 +19,7 @@ import '../../libs/fontawesome-5.2.0/css/all.css';
 import '../../styles/index.less';
 import Container from '../common/Container';
 import CommonButton from '../common/CommonButton';
-
+const templates = require('../templates/templates.json');
 const propertiesToInclude = [
     'id',
     'name',
@@ -93,6 +93,7 @@ class ImageMapEditor extends Component {
         dataSources: [],
         editing: false,
         descriptors: {},
+        template: [],
     }
 
     componentDidMount() {
@@ -414,9 +415,52 @@ class ImageMapEditor extends Component {
         },
         onImport: (files) => {
             if (files) {
-                this.showLoading(true);
+            //     this.showLoading(true);
+            //     setTimeout(() => {
+            //         const reader = new FileReader();
+            //         const file = files[0];
+            //         const myBlob = new Blob (files, {type: "application/json"})
+            //         reader.onprogress = (e) => {
+            //             if (e.lengthComputable) {                                            
+            //                 const progress = parseInt(((e.loaded / e.total) * 100), 10);
+            //                 this.handlers.onProgress(progress);
+            //             }
+            //         };
+            //         reader.onload = (e) => {
+            //             const { objects, animations, styles, dataSources } = JSON.parse(e.target.result);
+            //             this.setState({
+            //                 animations,
+            //                 styles,
+            //                 dataSources,
+            //             });
+            //             if (objects) {
+            //                 this.canvasRef.handlers.clear(true);
+            //                 const data = objects.filter((obj) => {
+            //                     if (!obj.id) {
+            //                         return false;
+            //                     }
+            //                     return true;
+            //                 });
+            //                 this.canvasRef.handlers.importJSON(JSON.stringify(data));
+            //             }
+            //         };
+            //         reader.onloadend = () => {
+            //             this.showLoading(false);
+            //         };
+            //         reader.onerror = () => {
+            //             this.showLoading(false);
+            //         };
+            //         // console.log(.files[0]);
+            //         reader.readAsText(file),console.log(files[0], myBlob);
+                    
+            //     }, 500);
+            // }
+            
+            this.showLoading(true);
                 setTimeout(() => {
                     const reader = new FileReader();
+                    const file = this.state.template[0].data;
+                    const myBlob = new Blob ([file], {type: "application/json"});
                     reader.onprogress = (e) => {
                         if (e.lengthComputable) {                                            
                             const progress = parseInt(((e.loaded / e.total) * 100), 10);
@@ -424,7 +468,7 @@ class ImageMapEditor extends Component {
                         }
                     };
                     reader.onload = (e) => {
-                        const { objects, animations, styles, dataSources } = JSON.parse(e.target.result);
+                        const { objects, animations, styles, dataSources } = JSON.parse(e.target.value);
                         this.setState({
                             animations,
                             styles,
@@ -441,13 +485,16 @@ class ImageMapEditor extends Component {
                             this.canvasRef.handlers.importJSON(JSON.stringify(data));
                         }
                     };
+                    console.log(myBlob);
                     reader.onloadend = () => {
                         this.showLoading(false);
                     };
                     reader.onerror = () => {
                         this.showLoading(false);
                     };
-                    reader.readAsText(files[0]);
+                    reader.readAsArrayBuffer(myBlob);
+                    // console.log(.files[0]);
+                    
                 }, 500);
             }
         },
@@ -513,6 +560,41 @@ class ImageMapEditor extends Component {
         onSaveImage: () => {
             this.canvasRef.handlers.saveCanvasImage();
         },
+        // Added for modifications
+        onSaveTemplate: () => {
+            // alert('save templa?');
+            
+            this.showLoading(true);
+            const objects = this.canvasRef.handlers.exportJSON().objects.filter((obj) => {
+                if (!obj.id) {
+                    return false;
+                }
+                return true;
+            });
+            const { animations, styles, dataSources } = this.state;
+            const exportDatas = {
+                objects,
+                animations,
+                styles,
+                dataSources,
+            };
+            const anchorEl = document.createElement('a');
+            anchorEl.href = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(exportDatas, null, '\t'))}`;
+            const newTemplate = {
+                name: 'template1',
+                data: anchorEl.href,
+            }
+            this.state.template.push(newTemplate);
+            // templates.push(newTemplate);
+            this.showLoading(false);
+            console.log(anchorEl.href, templates);
+        },
+        onLoadTemplate: () => {
+            const inputEl = document.createElement('input');
+            this.handlers.onImport(this.state.template[0].data),
+            document.body.appendChild(inputEl); 
+            
+        },
     }
 
     transformList = () => {
@@ -564,6 +646,8 @@ class ImageMapEditor extends Component {
             onChangeStyles,
             onChangeDataSources,
             onSaveImage,
+            onSaveTemplate,
+            onLoadTemplate
         } = this.handlers;
         const action = (
             <React.Fragment>
@@ -576,6 +660,22 @@ class ImageMapEditor extends Component {
                     onClick={onDownload}
                     tooltipPlacement="bottomRight"
                 />
+                <CommonButton
+                    className="rde-action-btn"
+                    shape="circle"
+                    icon="file-download"
+                    tooltipTitle={i18n.t('action.upload')}
+                    tooltipPlacement="bottomRight"
+                    onClick={onSaveTemplate}
+                />    
+                <CommonButton
+                    className="rde-action-btn"
+                    shape="circle"
+                    icon="file-upload"
+                    tooltipTitle={i18n.t('action.upload')}
+                    tooltipPlacement="bottomRight"
+                    onClick={onLoadTemplate}
+                />        
                 {
                     editing ? (
                         <Popconfirm
@@ -627,6 +727,7 @@ class ImageMapEditor extends Component {
         );
         const content = (
             <div className="rde-editor">
+                {/* sidebar toolbar */}
                 <ImageMapItems ref={(c) => { this.itemsRef = c; }} canvasRef={this.canvasRef} descriptors={descriptors} />
                 <div className="rde-editor-canvas-container">
                     <div className="rde-editor-header-toolbar">

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Menu } from 'antd';
+import { Button, Menu, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import i18n from 'i18next';
 import Adsense from 'react-adsense';
 
 import { FlexBox } from '../components/flex';
-import Icon from '../components/icon/Icon';
+// import Icon from '../components/icon/Icon';
 
 class Title extends Component {
     static propTypes = {
@@ -21,9 +21,9 @@ class Title extends Component {
 
     render() {
         return (
-            <FlexBox style={{ background: 'linear-gradient(141deg,#23303e,#404040 51%,#23303e 75%)' }} flexWrap="wrap" flex="1" alignItems="center">
+            <FlexBox style={{ background: 'linear-gradient(141deg,#ff1400,#ff6b27 46%,#ff8f3e 69%)'}} flexWrap="wrap" flex="1" alignItems="center">
                 <FlexBox style={{ marginLeft: 8 }} flex="0 1 auto">
-                    <span style={{ color: '#fff', fontSize: 24, fontWeight: 500 }}>React Design Editor</span>
+                    <span style={{ color: '#fff', fontSize: 32, fontWeight: 700 }}>Ad Builder</span>
                     <Button
                         className="rde-action-btn"
                         style={{
@@ -33,22 +33,23 @@ class Title extends Component {
                         size="large"
                         onClick={this.handlers.goGithub}
                     >
-                        <Icon name="github" prefix="fab" size={1.5} />
+                        <Icon src="https://files.slack.com/files-pri/TDGLNEH5Z-FH0TGGDCK/ubp-logo-refresh__1_.png" prefix="fab" size={1.5} />
                     </Button>
                 </FlexBox>
                 <FlexBox style={{ marginLeft: 88 }}>
-                    <Menu mode="horizontal" theme="dark" style={{ background: 'transparent', fontSize: '16px' }} onClick={this.props.onChangeMenu} selectedKeys={[this.props.current]}>
+                    <Menu mode="horizontal" theme="light" style={{ background: 'transparent', fontSize: '24px', borderRadius: '5px' }} onClick={this.props.onChangeMenu} selectedKeys={[this.props.current]}>
                         <Menu.Item key="imagemap" style={{ color: '#fff' }}>{i18n.t('imagemap.imagemap')}</Menu.Item>
-                        <Menu.Item key="workflow" style={{ color: '#fff' }}>{i18n.t('workflow.workflow')}</Menu.Item>
+                        <Menu.Item key="selecttemplate" style={{ color: '#fff' }}>{i18n.t('selecttemplate.selecttemplate')}</Menu.Item>
+                        <Menu.Item key="workflow" style={{ color: '#ff1400' }}>{i18n.t('workflow.workflow')}</Menu.Item>
                     </Menu>
                 </FlexBox>
-                <FlexBox flex="1" justifyContent="flex-end">
+                {/* <FlexBox flex="1" justifyContent="flex-end">
                     <Adsense.Google
                         client="ca-pub-8569372752842198"
                         slot="5790685139"
                         style={{ display: 'inline-block', width: 600, height: 60 }}
                     />
-                </FlexBox>
+                </FlexBox> */}
             </FlexBox>
         );
     }

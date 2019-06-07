@@ -3,11 +3,12 @@ import { Helmet } from 'react-helmet';
 
 import ImageMapEditor from '../components/imagemap/ImageMapEditor';
 import WorkflowEditor from '../components/workflow/WorkflowEditor';
+import SelectTemplate from '../components/selecttemplate/SelectTemplate';
 import Title from './Title';
 
 class App extends Component {
     state = {
-        current: 'imagemap',
+        current: 'selecttemplate',
     }
 
     onChangeMenu = ({ key }) => {
@@ -27,7 +28,7 @@ class App extends Component {
                     <link rel="manifest" href="./manifest.json" />
                     <link rel="shortcut icon" href="./favicon.ico" />
                     <link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css" />
-                    <title>React Design Editor</title>
+                    <title>Ad Builder</title>
                     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-97485289-3"></script>
                     <script>
                         {`
@@ -37,7 +38,7 @@ class App extends Component {
                         gtag('config', 'UA-97485289-3');
                         `}
                     </script>
-                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    {/* <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> */}
                 </Helmet>
                 <div className="rde-title">
                     <Title onChangeMenu={this.onChangeMenu} current={current} />
@@ -46,7 +47,9 @@ class App extends Component {
                     {
                         current === 'imagemap' ? (
                             <ImageMapEditor />
-                        ) : (
+                        ) : current === 'selecttemplate' ? (
+                            <SelectTemplate />
+                        )  : (
                             <WorkflowEditor />
                         )
                     }
